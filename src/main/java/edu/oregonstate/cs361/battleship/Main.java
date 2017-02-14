@@ -2,7 +2,7 @@ package edu.oregonstate.cs361.battleship;
 
 import com.google.gson.Gson;
 import spark.Request;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import static spark.Spark.*;
@@ -326,22 +326,51 @@ public class Main {
         }
 
         // The following branch tree checks if a point fired at BY A PLAYER has hit a COMPUTER ship and adds the point to the array of hits if so
+        boolean miss = true;
+
         if( Hit( CAircraftCarrier.getStart(), CAircraftCarrier.getEnd(), FireSpot ) ){
-            model.addPointtoArray(FireSpot, model.getComputerHits());
+
+            if (!(model.getComputerHits().contains(FireSpot))) {
+                model.addPointtoArray(FireSpot, model.getComputerHits());
+                CAircraftCarrier.hitHP();
+                miss = false;
+            }
         }
-        else if ( Hit( CBattleship.getStart(), CBattleship.getEnd(), FireSpot ) ){
-            model.addPointtoArray(FireSpot, model.getComputerHits());
+        else if ( Hit( CBattleship.getStart(), CBattleship.getEnd(), FireSpot ) ) {
+
+            if (!(model.getComputerHits().contains(FireSpot))) {
+                model.addPointtoArray(FireSpot, model.getComputerHits());
+                CBattleship.hitHP();
+                miss = false;
+            }
         }
         else if ( Hit( CCruiser.getStart(), CCruiser.getEnd(), FireSpot  ) ){
-            model.addPointtoArray(FireSpot, model.getComputerHits());
+
+            if (!(model.getComputerHits().contains(FireSpot))) {
+                model.addPointtoArray(FireSpot, model.getComputerHits());
+                CCruiser.hitHP();
+                miss = false;
+            }
         }
+
         else if ( Hit( CDestroyer.getStart(), CDestroyer.getEnd(), FireSpot  ) ){
-            model.addPointtoArray(FireSpot, model.getComputerHits());
+
+            if (!(model.getComputerHits().contains(FireSpot))) {
+                model.addPointtoArray(FireSpot, model.getComputerHits());
+                CDestroyer.hitHP();
+                miss = false;
+            }
         }
         else if ( Hit( CSubmarine.getStart(), CSubmarine.getEnd(), FireSpot  ) ){
-            model.addPointtoArray(FireSpot, model.getComputerHits());
+
+            if (!(model.getComputerHits().contains(FireSpot))) {
+                model.addPointtoArray(FireSpot, model.getComputerHits());
+                CSubmarine.hitHP();
+                miss = false;
+            }
         }
-        else{   // No hits on any ships, adds point to array of misses instead
+        // No hits on any ships, adds point to array of misses instead
+        if (miss) {
             model.addPointtoArray(FireSpot, model.getComputerMisses());
         }
 
@@ -352,28 +381,65 @@ public class Main {
         Point FireSpotComputer = new Point(shootX, shootY);
 
         // Following branch tree checks if a point fired at BY THE COMPUTER has hit a PLAYER ship and adds the point to the array of hits if so
+        miss = true;
+
         if( Hit( PAircraftCarrier.getStart(), PAircraftCarrier.getEnd(), FireSpotComputer ) ){
-            model.addPointtoArray(FireSpotComputer, model.getPlayerHits());
+
+            if (!(model.getPlayerHits().contains(FireSpotComputer))) {
+                model.addPointtoArray(FireSpot, model.getPlayerHits());
+                PAircraftCarrier.hitHP();
+                miss = false;
+            }
         }
         else if ( Hit( PBattleship.getStart(), PBattleship.getEnd(), FireSpotComputer  ) ){
-            model.addPointtoArray(FireSpotComputer, model.getPlayerHits());
+
+            if (!(model.getPlayerHits().contains(FireSpotComputer))) {
+                model.addPointtoArray(FireSpot, model.getPlayerHits());
+                PBattleship.hitHP();
+                miss = false;
+            }
         }
         else if ( Hit( PCruiser.getStart(), PCruiser.getEnd(), FireSpotComputer  ) ){
-            model.addPointtoArray(FireSpotComputer, model.getPlayerHits());
+
+            if (!(model.getPlayerHits().contains(FireSpotComputer))) {
+                model.addPointtoArray(FireSpot, model.getPlayerHits());
+                PCruiser.hitHP();
+                miss = false;
+            }
         }
         else if ( Hit( PDestroyer.getStart(), PDestroyer.getEnd(), FireSpotComputer  ) ){
-            model.addPointtoArray(FireSpotComputer, model.getPlayerHits());
+
+            if (!(model.getPlayerHits().contains(FireSpotComputer))) {
+                model.addPointtoArray(FireSpot, model.getPlayerHits());
+                PDestroyer.hitHP();
+                miss = false;
+            }
         }
         else if ( Hit( PSubmarine.getStart(), PSubmarine.getEnd(), FireSpotComputer  ) ){
-            model.addPointtoArray(FireSpotComputer, model.getPlayerHits());
+
+            if (!(model.getPlayerHits().contains(FireSpotComputer))) {
+                model.addPointtoArray(FireSpot, model.getPlayerHits());
+                PSubmarine.hitHP();
+                miss = false;
+            }
         }
-        else{   // No hits on any ships, adds point to array of misses instead
+        // No hits on any ships, adds point to array of misses instead
+        if (miss) {
             model.addPointtoArray(FireSpotComputer, model.getPlayerMisses());
+        }
+
+        // If 17 hits in either Computer or PLayer hits, one side has been vanquished and we set gameOngoing to false
+        if (model.getComputerHits().size() == 17 || model.getPlayerHits().size() == 17) {
+            model.setGameOngoing(false);
         }
 
         Gson gson = new Gson();
         String jsonobject = gson.toJson(model);
+
+        System.out.println(jsonobject);
         return jsonobject;
+
+
     }
 
     public static boolean Hit(Point shipStart, Point shipEnd, Point shotPoint){
