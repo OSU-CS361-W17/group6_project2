@@ -62,10 +62,10 @@ public class BattleshipModel {
         computerDestroyer = new Ship("computerDestroyer");
         computerSubmarine = new Ship("computerSubmarine");
 
-        playerHits = new ArrayList<Point>();
-        playerMisses = new ArrayList<Point>();
-        computerHits = new ArrayList<Point>();
-        computerMisses = new ArrayList<Point>();
+        playerHits = new ArrayList<>();
+        playerMisses = new ArrayList<>();
+        computerHits = new ArrayList<>();
+        computerMisses = new ArrayList<>();
 
         gameOngoing = true;
     }

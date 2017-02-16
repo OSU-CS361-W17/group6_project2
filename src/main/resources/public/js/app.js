@@ -191,8 +191,6 @@ function fire(){
 function displayGameState(gameModel){
 $( '#MyBoard td'  ).css("background-color", "blue");
 $( '#TheirBoard td'  ).css("background-color", "blue");
-$( '#PlayerShipStats td'  ).css("background-color", "green");
-$( '#ComputerShipStats td'  ).css("background-color", "green");
 
 // EDITED THIS
 displayShip(gameModel.playerAircraftCarrier);
