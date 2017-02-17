@@ -28,6 +28,8 @@ public class BattleshipModel {
     private List<Point> computerHits;
     private List<Point> computerMisses;
 
+    private boolean gameOngoing;
+
 
     public List<Point> getPlayerHits() {
         return playerHits;
@@ -60,10 +62,12 @@ public class BattleshipModel {
         computerDestroyer = new Ship("computerDestroyer");
         computerSubmarine = new Ship("computerSubmarine");
 
-        playerHits = new ArrayList<Point>();
-        playerMisses = new ArrayList<Point>();
-        computerHits = new ArrayList<Point>();
-        computerMisses = new ArrayList<Point>();
+        playerHits = new ArrayList<>();
+        playerMisses = new ArrayList<>();
+        computerHits = new ArrayList<>();
+        computerMisses = new ArrayList<>();
+
+        gameOngoing = true;
     }
 
 
@@ -200,5 +204,13 @@ public class BattleshipModel {
     }
 
     //public void setComputerSubmarine(Ship computerSubmarine) { this.computerSubmarine = computerSubmarine; }
+
+    public boolean isGameOngoing() {
+        return gameOngoing;
+    }
+
+    public void setGameOngoing(boolean gameOngoing) {
+        this.gameOngoing = gameOngoing;
+    }
 
 }
